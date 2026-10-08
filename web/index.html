@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#142a3c">
+  <title>ARQA · Дневник смен водителя</title>
+  <link rel="stylesheet" href="/static/styles.css">
+  <script src="/static/app.js" defer></script>
+</head>
+<body>
+  <main class="app-shell">
+    <header class="topbar">
+      <a class="brand" href="/" aria-label="Дневник смен водителя">
+        <span class="brand-emblem">a.</span>
+        <span class="brand-name">arqa <span class="brand-separator">/</span> <span class="brand-sub">driver tools</span></span>
+      </a>
+      <span class="status-pill"><span class="status-dot"></span> Демо · UTC+5</span>
+    </header>
+
+    <section class="intro" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">УЧЁТ ПОЕЗДОК</p>
+        <h1 id="page-title">Дневник смен<span class="accent">.</span></h1>
+        <p class="intro-description">Выручка, комиссия и поездки за день — всё в одном месте.</p>
+      </div>
+      <div class="date-picker">
+        <span class="date-caption">Выбранная дата</span>
+        <div class="date-controls">
+          <button id="previous-day" class="icon-button" type="button" aria-label="Предыдущий день">‹</button>
+          <input type="date" id="day" aria-label="Дата смены" value="2026-10-01">
+          <button id="next-day" class="icon-button" type="button" aria-label="Следующий день">›</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="overview-grid" aria-label="Сводка за день">
+      <article class="receipt" aria-labelledby="receipt-title">
+        <div class="receipt-topline"><span id="receipt-title">Дневник смен</span><span>ARQA / 001</span></div>
+        <div class="receipt-date" id="display-date">01.10.2026</div>
+        <div class="receipt-line"></div>
+        <div class="receipt-row"><span>Поездок</span><strong id="trip-count">0</strong></div>
+        <div class="receipt-row"><span>Выручка</span><strong id="revenue">0 ₸</strong></div>
+        <div class="receipt-row"><span>Комиссия</span><strong id="commission">0 ₸</strong></div>
+        <div class="receipt-row"><span>Наличные / карта</span><strong id="payment-breakdown">0 / 0 ₸</strong></div>
+        <div class="receipt-line"></div>
+        <div class="receipt-bottom"><span>На руки</span><strong id="net">0 ₸</strong></div>
+        <p class="receipt-footnote">Данные обновляются после добавления поездки</p>
+      </article>
+      <div class="summary-side">
+        <article class="stat-card">
+          <span class="stat-label">Общая выручка</span>
+          <strong id="revenue-card">0 ₸</strong>
+          <p>Сумма всех поездок за день</p>
+          <span class="card-symbol">↗</span>
+        </article>
+        <article class="stat-card dark">
+          <span class="stat-label">К получению</span>
+          <strong id="net-card">0 ₸</strong>
+          <p>Выручка за вычетом комиссии</p>
+          <span class="card-symbol">✓</span>
+        </article>
+      </div>
+    </section>
+
+    <section class="workspace-grid">
+      <article class="panel rides-panel" aria-labelledby="trips-title">
+        <div class="panel-header">
+          <div><p class="eyebrow">ИСТОРИЯ</p><h2 id="trips-title">Поездки за день</h2></div>
+          <span id="rides-label" class="count-badge">0 поездок</span>
+        </div>
+        <div id="trips" class="trips-list" aria-live="polite"></div>
+      </article>
+
+      <article class="panel add-panel" aria-labelledby="add-title">
+        <div class="panel-header">
+          <div><p class="eyebrow">НОВАЯ ЗАПИСЬ</p><h2 id="add-title">Добавить поездку</h2></div>
+          <span class="add-icon">+</span>
+        </div>
+        <form id="trip-form">
+          <label for="trip-id">Идентификатор поездки</label>
+          <input id="trip-id" name="id" type="text" required maxlength="128" placeholder="Например, trip-103">
+          <div class="form-row">
+            <div><label for="start">Начало · UTC+5</label><input id="start" name="start" type="datetime-local" required></div>
+            <div><label for="end">Конец · UTC+5</label><input id="end" name="end" type="datetime-local" required></div>
+          </div>
+          <div class="form-row">
+            <div><label for="amount">Сумма, ₸</label><input id="amount" name="amount" type="number" min="1" step="1" required placeholder="2400"></div>
+            <div><label for="commission-input">Комиссия, ₸</label><input id="commission-input" name="commission" type="number" min="0" step="1" required placeholder="360"></div>
+          </div>
+          <label for="payment">Способ оплаты</label>
+          <select id="payment" name="payment"><option value="card">Карта</option><option value="cash">Наличные</option></select>
+          <button id="submit-trip" type="submit" class="primary-button">Сохранить поездку <span>↗</span></button>
+          <p class="form-hint">Повторная отправка того же ID не создаст дубль.</p>
+          <div id="form-message" class="form-message" role="status" aria-live="polite"></div>
+        </form>
+      </article>
+    </section>
+
+    <footer>ARQA Driver Shift Diary · <a href="/docs">API-документация</a> · Данные хранятся в SQLite</footer>
+  </main>
+</body>
+</html>
